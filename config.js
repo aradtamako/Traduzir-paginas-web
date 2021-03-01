@@ -19,9 +19,9 @@ var twpConfig = {}
         showTranslatePageContextMenu: true,
         showTranslateSelectedContextMenu: true,
         showOriginalTextWhenHovering: true,
-        showTranslateSelectedButton: true,
+        showTranslateSelectedButton: "yes",
         darkMode: "auto",
-        showReleaseNotes: true,
+        showReleaseNotes: "yes",
     }
 
     twpConfig.onReady = function (callback) {
