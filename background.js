@@ -515,7 +515,9 @@ chrome.storage.local.get("targetLanguage", onGot => {
 
 // listLangs
 var langs = []
-;(function() {
+;(function () {
+    twpConfig.initialize()
+
     var uilanguage = chrome.i18n.getUILanguage()
     if (uilanguage.toLowerCase() != "zh-cn" && uilanguage.toLowerCase() != "zh-tw") {
         uilanguage = uilanguage.split("-")[0]

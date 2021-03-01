@@ -9,7 +9,10 @@ var twpConfig = {}
     const defaultConfig = {
         pageTranslatorService: "google",
         targetLanguages: [], // "en", "es", "de"
-        alwaysTranslateSites: [],
+        alwaysTranslateSites: [
+            "dunfaoff.com",
+            "namu.wiki"
+        ],
         neverTranslateSites: [],
         alwaysTranslateLangs: [],
         neverTranslateLangs: [],
@@ -108,6 +111,15 @@ var twpConfig = {}
             array.splice(index, 1)
             twpConfig.set(configName, array)
         }
+    }
+
+    twpConfig.initialize = function () {
+        chrome.storage.local.get(null, obj => {
+            const keys = Object.keys(obj)
+            if (keys.length === 0) {
+                chrome.storage.local.set(defaultConfig)
+            }
+        })
     }
 
     twpConfig.addSiteToAlwaysTranslate = function (hostname) {
