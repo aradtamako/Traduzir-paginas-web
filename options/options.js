@@ -151,9 +151,9 @@ chrome.runtime.sendMessage({action: "getUseNewAlgorithm"}, useNewAlgorithm => {
     if (uilanguage.toLowerCase() != "zh-cn" && uilanguage.toLowerCase() != "zh-tw") {
         uilanguage = uilanguage.split("-")[0]
     }
-    var langs = languages[uilanguage]
+    var langs = twpLang.languages[uilanguage]
     if (!langs) {
-        langs = languages["en"]
+        langs = twpLang.languages["en"]
     }
 
     var langsSorted = []
