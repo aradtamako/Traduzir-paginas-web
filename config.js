@@ -64,7 +64,7 @@ var twpConfig = {}
     chrome.i18n.getAcceptLanguages(acceptedLanguages => {
         chrome.storage.local.get(null, onGot => {
             config = {}
-    
+
             for (const name in defaultConfig) {
                 config[name] = defaultConfig[name]
             }
@@ -86,11 +86,11 @@ var twpConfig = {}
                     config.targetLanguages.push(defaultTargetLanguages[idx])
                 }
             }
-    
+
             for (const name in onGot) {
                 config[name] = onGot[name]
             }
-            
+
             onReadyObservers.forEach(callback => callback())
             onReadyObservers = []
         })
