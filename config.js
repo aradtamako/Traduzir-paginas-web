@@ -8,7 +8,11 @@ var twpConfig = {}
     let config = null
     const defaultConfig = {
         pageTranslatorService: "google",
-        targetLanguages: [], // "en", "es", "de"
+        targetLanguages: [
+            "ko",
+            "ja",
+            "en"
+        ], // "en", "es", "de"
         alwaysTranslateSites: [
             "dunfaoff.com",
             "namu.wiki"
