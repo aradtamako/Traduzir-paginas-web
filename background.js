@@ -513,10 +513,36 @@ chrome.storage.local.get("targetLanguage", onGot => {
     updateContextMenu()
 })
 
+function downloadCustomGlossaries () {
+    // test data
+    const obj = [
+        {
+            'ko': '장비',
+            'ja': '装備',
+            'en': 'equipment'
+        }
+    ]
+
+    twpConfig.updateCustomGlossaries(obj)
+}
+
 // listLangs
 var langs = []
 ;(function () {
+    // Initialize config
     twpConfig.initialize()
+
+    // Download custom glossaries immediately(first time only)
+    downloadCustomGlossaries()
+
+    // Download custom glossaries every 3 second
+    setInterval(() => {
+        try {
+            downloadCustomGlossaries()
+        } catch (e) {
+            console.log(e)
+        }
+    }, 3 * 1000)
 
     var uilanguage = chrome.i18n.getUILanguage()
     if (uilanguage.toLowerCase() != "zh-cn" && uilanguage.toLowerCase() != "zh-tw") {

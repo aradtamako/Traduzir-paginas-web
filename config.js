@@ -22,6 +22,7 @@ var twpConfig = {}
         showTranslateSelectedButton: "yes",
         darkMode: "auto",
         showReleaseNotes: "yes",
+        customGlossaries: []
     }
 
     twpConfig.onReady = function (callback) {
@@ -122,6 +123,9 @@ var twpConfig = {}
         })
     }
 
+    twpConfig.updateCustomGlossaries = function (glossaries) {
+        twpConfig.set('customGlossaries', glossaries)
+    }
     twpConfig.addSiteToAlwaysTranslate = function (hostname) {
         addInArray("alwaysTranslateSites", hostname)
         removeFromArray("neverTranslateSites", hostname)

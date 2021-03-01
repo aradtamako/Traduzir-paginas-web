@@ -23,6 +23,8 @@ chrome.runtime.sendMessage({action: "getTranslationEngine"}, translationEngine =
     var newNodesToTranslate = []
     var removedNodes = []
 
+    var customGlossaries = []
+
     function translateNewNodes() {
         newNodesToTranslate.forEach(ntt => {
             if (removedNodes.indexOf(ntt) != -1) return;
@@ -216,10 +218,28 @@ chrome.runtime.sendMessage({action: "getTranslationEngine"}, translationEngine =
             .replace(/\&\#39;/g, "'");
     }
 
+    function replaceCustomGlossaries (params, targetLanguage) {
+        for (let i = 0; i < params.length; i++) {
+            for (const glosary of customGlossaries) {
+                for (const glosaryKey of Object.keys(glosary).filter(key => key !== targetLanguage)) {
+                    const word = glosary[glosaryKey]
+                    if (params[i].toLowerCase().includes(word)) {
+                        params[i] = params[i].toLowerCase().replace(word, glosary[targetLanguage])
+                        // console.log(`Replaced: ${word} -> ${glosary[targetLanguage]}`)
+                    }
+                }
+            }
+        }
+
+        return params
+    }
+
     function translateHtml(params, targetLanguage) {
         var requestBody = ""
         var translationInfo = []
         var stringsToTranslateInfo = []
+        params = replaceCustomGlossaries(params, targetLanguage)
+
         for (let str of params) {
             var translatedStringInfo = translatedStrings.find(value => value.original == str)
             if (translatedStringInfo) {
@@ -757,8 +777,9 @@ chrome.runtime.sendMessage({action: "getTranslationEngine"}, translationEngine =
     window.detectedLanguage = undefined
     chrome.runtime.sendMessage({action: "detectLanguage"}, lang => {
         window.detectedLanguage = lang || null
+        chrome.storage.local.get(["alwaysTranslateLangs", "alwaysTranslateSites", "neverTranslateSites", "customGlossaries"], onGot => {
+            customGlossaries = onGot.customGlossaries
 
-        chrome.storage.local.get(["alwaysTranslateLangs", "alwaysTranslateSites", "neverTranslateSites"], onGot => {
             var alwaysTranslateSites = onGot.alwaysTranslateSites
             if (!alwaysTranslateSites) {
                 alwaysTranslateSites = []
