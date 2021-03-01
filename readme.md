@@ -5,5 +5,6 @@
 - Auto translation using custom glossaries
 
 ### How to contribute
-Edit this file  
+Feel free to contribute.
+Contact does not required.
 https://docs.google.com/spreadsheets/d/1RTjeatYbyyiyAvHvigZkqqPwDTX9l7w_CBkaf0xzXXA/edit?usp=sharing
