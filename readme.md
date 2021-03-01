@@ -4,6 +4,14 @@
 ### Features
 - Auto translation using custom glossaries
 
+### How to install
+Pending approval for Google
+
+### Howto use
+Open context menu & Click "translate"  
+or  
+Alt + T
+
 ### How to contribute
 Feel free to contribute.
 Contact does not required.
