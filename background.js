@@ -513,16 +513,10 @@ chrome.storage.local.get("targetLanguage", onGot => {
     updateContextMenu()
 })
 
-function downloadCustomGlossaries () {
-    // test data
-    const obj = [
-        {
-            'ko': '장비',
-            'ja': '装備',
-            'en': 'equipment'
-        }
-    ]
-
+async function downloadCustomGlossaries () {
+    const url = 'https://arad.pure-db.com/api/translate/glossaries'
+    const response = await fetch(url)
+    const obj = await response.json()
     twpConfig.updateCustomGlossaries(obj)
 }
 
@@ -535,14 +529,14 @@ var langs = []
     // Download custom glossaries immediately(first time only)
     downloadCustomGlossaries()
 
-    // Download custom glossaries every 3 second
-    setInterval(() => {
+    // Download custom glossaries every 30 minutes
+    setInterval(async () => {
         try {
-            downloadCustomGlossaries()
+            await downloadCustomGlossaries()
         } catch (e) {
             console.log(e)
         }
-    }, 3 * 1000)
+    }, 30 * 60 * 1000)
 
     var uilanguage = chrome.i18n.getUILanguage()
     if (uilanguage.toLowerCase() != "zh-cn" && uilanguage.toLowerCase() != "zh-tw") {
