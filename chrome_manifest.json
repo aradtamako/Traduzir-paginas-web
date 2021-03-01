@@ -72,6 +72,6 @@
     ],
 
     "background": {
-        "scripts": ["languages.js", "background.js"]
+        "scripts": ["languages.js", "config.js", "background.js"]
     }
 }
