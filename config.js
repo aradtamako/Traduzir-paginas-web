@@ -122,7 +122,6 @@ var twpConfig = {}
         chrome.storage.local.get(null, obj => {
             const keys = Object.keys(obj)
             if (keys.length === 0) {
-                Object.assign(config, defaultConfig)
                 chrome.storage.local.set(defaultConfig)
             }
         })
