@@ -8,11 +8,11 @@
 Pending approval for Google
 
 ### Howto use
-Open context menu & Click "translate"  
-or  
+Open context menu & Click "translate"<br>
+or<br>
 Alt + T
 
 ### How to contribute
-Feel free to contribute.
-Contact does not required.
+Feel free to contribute.<br>
+Contact does not required.<br>
 https://docs.google.com/spreadsheets/d/1RTjeatYbyyiyAvHvigZkqqPwDTX9l7w_CBkaf0xzXXA/edit?usp=sharing
