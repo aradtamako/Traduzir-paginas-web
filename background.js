@@ -416,7 +416,7 @@ chrome.runtime.onMessage.addListener( (request, sender, sendResponse) => {
     }
 })
 
-var showOriginalTextWhenHovering = "yes"
+var showOriginalTextWhenHovering = "no"
 chrome.storage.local.get("showOriginalTextWhenHovering", onGot => {
     if (onGot.showOriginalTextWhenHovering) {
         showOriginalTextWhenHovering = onGot.showOriginalTextWhenHovering
@@ -430,7 +430,7 @@ chrome.storage.local.get("darkMode", onGot => {
     }
 })
 
-var showTranslateSelectedContextMenu = "yes"
+var showTranslateSelectedContextMenu = "no"
 chrome.storage.local.get("showTranslateSelectedContextMenu", onGot => {
     if (onGot.showTranslateSelectedContextMenu) {
         showTranslateSelectedContextMenu = onGot.showTranslateSelectedContextMenu

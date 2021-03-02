@@ -316,7 +316,7 @@ chrome.storage.local.get("showTranslateSelectedButton", onGot => {
     if (onGot.showTranslateSelectedButton) {
         selectShowTranslateSelectedButton.value = onGot.showTranslateSelectedButton
     } else {
-        selectShowTranslateSelectedButton.value = "yes"
+        selectShowTranslateSelectedButton.value = "no"
     }
 })
 

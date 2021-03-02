@@ -22,8 +22,8 @@ var twpConfig = {}
         neverTranslateLangs: [],
         showTranslatePageContextMenu: true,
         showTranslateSelectedContextMenu: true,
-        showOriginalTextWhenHovering: true,
-        showTranslateSelectedButton: "yes",
+        showOriginalTextWhenHovering: "no",
+        showTranslateSelectedButton: "no",
         darkMode: "auto",
         showReleaseNotes: "yes",
         customGlossaries: []
@@ -122,6 +122,7 @@ var twpConfig = {}
         chrome.storage.local.get(null, obj => {
             const keys = Object.keys(obj)
             if (keys.length === 0) {
+                Object.assign(config, defaultConfig)
                 chrome.storage.local.set(defaultConfig)
             }
         })
