@@ -23,6 +23,7 @@ chrome.runtime.sendMessage({action: "getTranslationEngine"}, translationEngine =
     var newNodesToTranslate = []
     var removedNodes = []
 
+    var customGlosarySpecialKey = '___QWERASDZXC___'
     var customGlossaries = []
 
     function translateNewNodes() {
@@ -218,13 +219,14 @@ chrome.runtime.sendMessage({action: "getTranslationEngine"}, translationEngine =
             .replace(/\&\#39;/g, "'");
     }
 
-    function replaceCustomGlossaries (params, targetLanguage) {
+    function replaceCustomGlossariesBeforeRequest (params, targetLanguage) {
         for (let i = 0; i < params.length; i++) {
             for (const glosary of customGlossaries) {
-                for (const glosaryKey of Object.keys(glosary).filter(key => key !== targetLanguage)) {
-                    const word = glosary[glosaryKey].toLowerCase()
-                    if (params[i].toLowerCase().includes(word)) {
-                        params[i] = params[i].toLowerCase().replace(word, glosary[targetLanguage])
+                for (const glosaryKey of Object.keys(glosary).filter(key => key !== 'id' && key !== targetLanguage)) {
+                    const word = glosary[glosaryKey]
+                    if (params[i].toLowerCase().includes(word.toLowerCase())) {
+                        const regExp = new RegExp(word, 'ig')
+                        params[i] = params[i].replace(regExp, `${customGlosarySpecialKey}${glosary['id']}${customGlosarySpecialKey}`)
                         // console.log(`Replaced: ${word} -> ${glosary[targetLanguage]}`)
                     }
                 }
@@ -234,11 +236,22 @@ chrome.runtime.sendMessage({action: "getTranslationEngine"}, translationEngine =
         return params
     }
 
+    function replaceCustomGlossariesIdToCustomGlossariesString (str, id, targetLanguage) {
+        const glosary = customGlossaries.find(x => x.id === id)
+
+        if (!glosary) {
+            console.log('return null')
+            return null
+        }
+
+        return str.replaceAll(`${customGlosarySpecialKey}${id}${customGlosarySpecialKey}`, glosary[targetLanguage])
+    }
+
     function translateHtml(params, targetLanguage) {
         var requestBody = ""
         var translationInfo = []
         var stringsToTranslateInfo = []
-        params = replaceCustomGlossaries(params, targetLanguage)
+        params = replaceCustomGlossariesBeforeRequest(params, targetLanguage)
 
         for (let str of params) {
             var translatedStringInfo = translatedStrings.find(value => value.original == str)
@@ -301,6 +314,14 @@ chrome.runtime.sendMessage({action: "getTranslationEngine"}, translationEngine =
                     }
 
                     responseJson.forEach((value, index) => {
+                        // extract id
+                        const reg = new RegExp(`${customGlosarySpecialKey}([0-9]{1,})${customGlosarySpecialKey}`, 'g')
+                        let match;
+                        while ((match = reg.exec(value)) !== null) {
+                            const id = parseInt(match[1])
+                            value = replaceCustomGlossariesIdToCustomGlossariesString(value, id, targetLanguage)
+                        }
+
                         stringsToTranslateInfo[index].status = "complete"
                         stringsToTranslateInfo[index].translated = value
                     })
