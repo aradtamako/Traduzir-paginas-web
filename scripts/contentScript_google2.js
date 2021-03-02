@@ -23,7 +23,6 @@ chrome.runtime.sendMessage({action: "getTranslationEngine"}, translationEngine =
     var newNodesToTranslate = []
     var removedNodes = []
 
-    var customGlosarySpecialKey = '___QWERASDZXC___'
     var customGlossaries = []
 
     function translateNewNodes() {
@@ -226,7 +225,7 @@ chrome.runtime.sendMessage({action: "getTranslationEngine"}, translationEngine =
                     const word = glosary[glosaryKey]
                     if (params[i].toLowerCase().includes(word.toLowerCase())) {
                         const regExp = new RegExp(word, 'ig')
-                        params[i] = params[i].replace(regExp, `${customGlosarySpecialKey}${glosary['id']}${customGlosarySpecialKey}`)
+                        params[i] = params[i].replace(regExp, glosary['uuid'])
                         // console.log(`Replaced: ${word} -> ${glosary[targetLanguage]}`)
                     }
                 }
@@ -236,15 +235,15 @@ chrome.runtime.sendMessage({action: "getTranslationEngine"}, translationEngine =
         return params
     }
 
-    function replaceCustomGlossariesIdToCustomGlossariesString (str, id, targetLanguage) {
-        const glosary = customGlossaries.find(x => x.id === id)
-
-        if (!glosary) {
-            console.log('return null')
-            return null
+    function replaceCustomGlossariesIdToCustomGlossariesString (str, targetLanguage) {
+        for (const glosary of customGlossaries) {
+            const uuid = glosary['uuid']
+            if (str.includes(uuid)) {
+                str = str.replaceAll(uuid, glosary[targetLanguage])
+            }
         }
 
-        return str.replaceAll(`${customGlosarySpecialKey}${id}${customGlosarySpecialKey}`, glosary[targetLanguage])
+        return str
     }
 
     function translateHtml(params, targetLanguage) {
@@ -315,12 +314,7 @@ chrome.runtime.sendMessage({action: "getTranslationEngine"}, translationEngine =
 
                     responseJson.forEach((value, index) => {
                         // extract id
-                        const reg = new RegExp(`${customGlosarySpecialKey}([0-9]{1,})${customGlosarySpecialKey}`, 'g')
-                        let match;
-                        while ((match = reg.exec(value)) !== null) {
-                            const id = parseInt(match[1])
-                            value = replaceCustomGlossariesIdToCustomGlossariesString(value, id, targetLanguage)
-                        }
+                        value = replaceCustomGlossariesIdToCustomGlossariesString(value, targetLanguage)
 
                         stringsToTranslateInfo[index].status = "complete"
                         stringsToTranslateInfo[index].translated = value
