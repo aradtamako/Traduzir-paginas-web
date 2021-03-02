@@ -222,7 +222,7 @@ chrome.runtime.sendMessage({action: "getTranslationEngine"}, translationEngine =
         for (let i = 0; i < params.length; i++) {
             for (const glosary of customGlossaries) {
                 for (const glosaryKey of Object.keys(glosary).filter(key => key !== targetLanguage)) {
-                    const word = glosary[glosaryKey]
+                    const word = glosary[glosaryKey].toLowerCase()
                     if (params[i].toLowerCase().includes(word)) {
                         params[i] = params[i].toLowerCase().replace(word, glosary[targetLanguage])
                         // console.log(`Replaced: ${word} -> ${glosary[targetLanguage]}`)
